@@ -21,7 +21,7 @@ namespace SenseWebdriverTest
             {
                 PageLoadStrategy = PageLoadStrategy.Normal
             };
-            _driver = new EdgeDriver(options);
+            _driver = new EdgeDriver("C:\\Webdriver");
         }
 
         [TestMethod]
@@ -31,6 +31,16 @@ namespace SenseWebdriverTest
             _driver.Url = "https://www.bing.com";
             Assert.AreEqual("Bing", _driver.Title);
         }
+
+        [TestMethod]
+        public void TestList()
+        {
+            IWebElement pirliste = _driver.FindElementById("pirListe");
+            Assert.IsNotNull(pirliste);
+        }
+
+
+
 
         [TestCleanup]
         public void EdgeDriverCleanup()
