@@ -15,6 +15,7 @@ namespace SenseWebdriverTest
         // to install Microsoft WebDriver.
 
         private EdgeDriver _driver;
+        string textToFind = "Kitchen2";
 
         [TestInitialize]
         public void EdgeDriverInitialize()
@@ -38,21 +39,58 @@ namespace SenseWebdriverTest
         [TestMethod]
         public void TestList()
         {
-            string textToFind = "Nothing Detected";
-
             _driver.Url = "https://senseregndans.azurewebsites.net/";
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
             IWebElement pirliste = wait.Until(d => d.FindElement(By.Id("pirListe")));
-
             Assert.IsTrue(pirliste.Text.Contains(textToFind));
-            
-            IWebElement hideButton = _driver.FindElementById("hideTableButton");
-            hideButton.Submit();
-            Assert.IsFalse(pirliste.Text.Contains(textToFind));
+        }
 
-            IWebElement showTableButton = _driver.FindElementById("showTableButton");
-            showTableButton.Submit();
-            Assert.IsTrue(pirliste.Text.Contains(textToFind));
+        [TestMethod]
+        public void HideButtonTest()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    _driver.Url = "https://senseregndans.azurewebsites.net/";
+                    WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+                    IWebElement pirliste = wait.Until(d => d.FindElement(By.Id("pirListe")));
+                    IWebElement hideTableButton = wait.Until(d => d.FindElement(By.Id("hideTableButton")));
+                    hideTableButton.Submit();
+                    Assert.IsFalse(pirliste.Text.Contains(textToFind));
+                }
+                catch (StaleElementReferenceException e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ShowButtonTest()
+        {
+
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    _driver.Url = "https://senseregndans.azurewebsites.net/";
+                    WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+                    IWebElement pirliste = wait.Until(d => d.FindElement(By.Id("pirListe")));
+
+                    IWebElement hideTableButton = wait.Until(d => d.FindElement(By.Id("hideTableButton")));
+                    hideTableButton.Submit();
+
+                    IWebElement showTableButton = _driver.FindElement(By.Id("showTableButton"));
+                    showTableButton.Submit();
+                    Assert.IsTrue(pirliste.Text.Contains(textToFind));
+                }
+                catch (StaleElementReferenceException e)
+                {
+                    Console.WriteLine(e);
+                }
+
+            }
         }
 
         [TestCleanup]
