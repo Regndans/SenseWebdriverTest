@@ -1,6 +1,9 @@
+using System;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Support.UI;
 
 namespace SenseWebdriverTest
 {
@@ -28,19 +31,29 @@ namespace SenseWebdriverTest
         public void VerifyPageTitle()
         {
             // Replace with your own test logic
-            _driver.Url = "https://www.bing.com";
-            Assert.AreEqual("Bing", _driver.Title);
+            _driver.Url = "https://senseregndans.azurewebsites.net/";
+            Assert.AreEqual("Title", _driver.Title);
         }
 
         [TestMethod]
         public void TestList()
         {
-            IWebElement pirliste = _driver.FindElementById("pirListe");
-            Assert.IsNotNull(pirliste);
+            string textToFind = "Nothing Detected";
+
+            _driver.Url = "https://senseregndans.azurewebsites.net/";
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            IWebElement pirliste = wait.Until(d => d.FindElement(By.Id("pirListe")));
+
+            Assert.IsTrue(pirliste.Text.Contains(textToFind));
+            
+            IWebElement hideButton = _driver.FindElementById("hideTableButton");
+            hideButton.Submit();
+            Assert.IsFalse(pirliste.Text.Contains(textToFind));
+
+            IWebElement showTableButton = _driver.FindElementById("showTableButton");
+            showTableButton.Submit();
+            Assert.IsTrue(pirliste.Text.Contains(textToFind));
         }
-
-
-
 
         [TestCleanup]
         public void EdgeDriverCleanup()
