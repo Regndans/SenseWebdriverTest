@@ -55,8 +55,8 @@ namespace SenseWebdriverTest
         public void HideButtonTest()
         {
             //Da vi havde problemer med at IWebElement hideTableButton refererede til en "forældet" instans, gentager vi processen med at sætte referencen 3 gange, for at give den øget chance for at virke.
-            for (int i = 0; i < 3; i++)
-            {
+            //for (int i = 0; i < 3; i++)
+            //{
                 try
                 {
                     //Der oprettes reference til tabellen.
@@ -74,7 +74,7 @@ namespace SenseWebdriverTest
                     //Hvis metoden efter 3 forsøg, stadig ikke har en gyldig reference til hidetable-knappen, skal den fange en exception og udskrive den til consollen.
                     Console.WriteLine(e);
                 }
-            }
+            //}
         }
 
         [TestMethod]
@@ -106,6 +106,15 @@ namespace SenseWebdriverTest
                 }
 
             }
+        }
+
+        [TestMethod]
+        public void SensorNameTest()
+        {
+            string nameToFind = "TestRoom";
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            IWebElement sensorListe = wait.Until(d => d.FindElement(By.Id("sensorListe")));
+            Assert.IsTrue(sensorListe.Text.Contains(nameToFind));
         }
 
         [TestCleanup]
