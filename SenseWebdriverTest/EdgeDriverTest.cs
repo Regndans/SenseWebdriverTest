@@ -141,6 +141,16 @@ namespace SenseWebdriverTest
 
         }
 
+        [TestMethod]
+        public void TimerTest()
+        {
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            IWebElement timerInputStart = _driver.FindElement(By.Id("inputStart"));
+            IWebElement timerInputEnd = _driver.FindElement(By.Id("inputEnd"));
+            Assert.IsTrue(timerInputStart.Text.Contains(DateTime.Now.Day.ToString()));
+
+        }
+
         [TestCleanup]
         //Afslut driveren.
         public void EdgeDriverCleanup()
