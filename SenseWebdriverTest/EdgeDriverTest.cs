@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -15,7 +16,7 @@ namespace SenseWebdriverTest
         // to install Microsoft WebDriver.
 
         private EdgeDriver _driver;
-        string textToFind = "string";
+        string textToFind = "Motion detected";
         private string dURL = "https://senseregndans.azurewebsites.net/";
 
 
@@ -38,7 +39,7 @@ namespace SenseWebdriverTest
         //Test om driveren går ind på den rigtige hjemmeside, ved at teste om sidens titel er den vi regner med.
         public void VerifyPageTitle()
         {
-            Assert.AreEqual("Title", _driver.Title);
+            Assert.AreEqual("Sense", _driver.Title);
         }
 
         [TestMethod]
@@ -111,10 +112,33 @@ namespace SenseWebdriverTest
         [TestMethod]
         public void SensorNameTest()
         {
-            string nameToFind = "TestRoom";
+            string nameToFind = "Kitchen";
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            IWebElement sensorListe = wait.Until(d => d.FindElement(By.Id("sensorListe")));
+            IWebElement sensorListe = wait.Until(d => d.FindElement(By.Id("sensorList")));
             Assert.IsTrue(sensorListe.Text.Contains(nameToFind));
+        }
+
+        [TestMethod]
+        public void SensorButtonOnOffTest()
+        {
+            
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            IWebElement sensorOnButton = _driver.FindElement(By.Id("onButton"));
+            IWebElement sensorOffButton = _driver.FindElement(By.Id("offButton"));
+            IWebElement sensorListe = wait.Until(d => d.FindElement(By.Id("sensorList")));
+            Console.WriteLine(sensorListe.Text);
+            sensorOnButton.Submit();
+            Assert.IsTrue(sensorListe.Text.Contains("true"));
+            Console.WriteLine(sensorListe.Text);
+            sensorOffButton.Submit();
+            Thread.Sleep(1000);
+            Assert.IsTrue(sensorListe.Text.Contains("false"));
+            Console.WriteLine(sensorListe.Text);
+            sensorOnButton.Submit();
+            Thread.Sleep(1000);
+            Assert.IsTrue(sensorListe.Text.Contains("true"));
+            Console.WriteLine(sensorListe.Text);
+
         }
 
         [TestCleanup]
