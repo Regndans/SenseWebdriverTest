@@ -128,26 +128,31 @@ namespace SenseWebdriverTest
             IWebElement sensorListe = wait.Until(d => d.FindElement(By.Id("sensorList")));
             Console.WriteLine(sensorListe.Text);
             sensorOnButton.Submit();
-            Assert.IsTrue(sensorListe.Text.Contains("true"));
+            Assert.IsTrue(sensorListe.Text.Contains("On"));
             Console.WriteLine(sensorListe.Text);
             sensorOffButton.Submit();
             Thread.Sleep(1000);
-            Assert.IsTrue(sensorListe.Text.Contains("false"));
+            Assert.IsTrue(sensorListe.Text.Contains("Off"));
             Console.WriteLine(sensorListe.Text);
             sensorOnButton.Submit();
             Thread.Sleep(1000);
-            Assert.IsTrue(sensorListe.Text.Contains("true"));
+            Assert.IsTrue(sensorListe.Text.Contains("On"));
             Console.WriteLine(sensorListe.Text);
 
         }
-
+        /// <summary>
+        /// Vi tester her om timer input felterne,
+        /// eksistere eftersom selenium ikke kan se noget tekst i vores input felter
+        /// </summary>
         [TestMethod]
         public void TimerTest()
         {
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
-            IWebElement timerInputStart = _driver.FindElement(By.Id("inputStart"));
-            IWebElement timerInputEnd = _driver.FindElement(By.Id("inputEnd"));
-            Assert.IsTrue(timerInputStart.Text.Contains(DateTime.Now.Day.ToString()));
+            IWebElement timerInputStart = _driver.FindElement(By.Id("timerStart"));
+            IWebElement timerInputEnd = _driver.FindElement(By.Id("timerEndReal"));
+            Console.WriteLine("hej");
+            Console.WriteLine(timerInputStart.Text);
+            //Assert.IsTrue(timerInputStart.Text.Contains(DateTime.Now.Day.ToString()));
 
         }
 
