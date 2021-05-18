@@ -180,6 +180,19 @@ namespace SenseWebdriverTest
 
         }
 
+        [TestMethod]
+        public void SortMotionsByNameTest()
+        {
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            var dropChangeNames = wait.Until(driver => driver.FindElement(By.Id("dropSortNames")));
+            var selectElement = new SelectElement(dropChangeNames);
+            selectElement.SelectByText("Garden");
+            Thread.Sleep(1000);
+            string nameToFind = "Kitchen";
+            IWebElement motionListe = wait.Until(d => d.FindElement(By.Id("pirListe")));
+            Assert.IsFalse(motionListe.Text.Contains(nameToFind));
+        }
+
         [TestCleanup]
         //Afslut driveren.
         public void EdgeDriverCleanup()
