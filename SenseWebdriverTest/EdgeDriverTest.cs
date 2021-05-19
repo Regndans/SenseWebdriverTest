@@ -123,7 +123,7 @@ namespace SenseWebdriverTest
         {
 
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            IWebElement sensorOnButton = _driver.FindElement(By.Id("onButton"));
+            IWebElement sensorOnButton = wait.Until(driver => driver.FindElement(By.Id("onButton")));
             IWebElement sensorOffButton = _driver.FindElement(By.Id("offButton"));
             IWebElement sensorListe = wait.Until(d => d.FindElement(By.Id("sensorList")));
             Console.WriteLine(sensorListe.Text);
@@ -148,7 +148,7 @@ namespace SenseWebdriverTest
         public void TimerTest()
         {
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
-            IWebElement timerInputStart = _driver.FindElement(By.Id("timerStart"));
+            IWebElement timerInputStart = wait.Until(driver => driver.FindElement(By.Id("timerStart"))) ;
             IWebElement timerInputEnd = _driver.FindElement(By.Id("timerEndReal"));
             Console.WriteLine("hej");
             Console.WriteLine(timerInputStart.Text);
