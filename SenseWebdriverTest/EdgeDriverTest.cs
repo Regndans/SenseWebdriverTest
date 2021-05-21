@@ -20,11 +20,12 @@ namespace SenseWebdriverTest
         private string dURL = "https://senseregndans.azurewebsites.net/";
 
 
-        //
+        /// <summary>
+        /// Initialisere vores testsetup med selenium
+        /// </summary>
         [TestInitialize]
         public void EdgeDriverInitialize()
         {
-            // Initialiser webdriver, fundet på C-drevet. Der benyttes chrome, fremfor Edge. 
             var options = new EdgeOptions
             {
                 PageLoadStrategy = PageLoadStrategy.Normal
@@ -34,16 +35,20 @@ namespace SenseWebdriverTest
             // sæt driver-URL til at matche vores hjemmeside.
             _driver.Url = dURL;
         }
-
+        
+        /// <summary>
+        /// Test om driveren går ind på den rigtige hjemmeside, ved at teste om sidens titel er den vi regner med.
+        /// </summary>
         [TestMethod]
-        //Test om driveren går ind på den rigtige hjemmeside, ved at teste om sidens titel er den vi regner med.
         public void VerifyPageTitle()
         {
             Assert.AreEqual("Sense", _driver.Title);
         }
-
+        
+        /// <summary>
+        ///Test at vores tabel indeholder data, ved at finde en forekomst af et bestemt ord, vi ved at tabellen skal indeholde.
+        /// </summary>
         [TestMethod]
-        //Test at vores tabel indeholder data, ved at finde en forekomst af et bestemt ord, vi ved at tabellen skal indeholde.
         public void TestList()
         {
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
@@ -51,11 +56,16 @@ namespace SenseWebdriverTest
             Assert.IsTrue(pirliste.Text.Contains(textToFind));
         }
 
+
+        /// <summary>
+        ///Test af hideTableButton, som skal skjule indholdet af tabellen på title-siden. Vi tester ved at se om vi kan finde en text i tabellen,
+        ///som forekom da tabellen var synlig, men nu ikke bør forekomme.
+        /// </summary>
         [TestMethod]
-        //Test af hideTableButton, som skal skjule indholdet af tabellen på title-siden. Vi tester ved at se om vi kan finde en text i tabellen, som forekom da tabellen var synlig, men nu ikke bør forekomme.
         public void HideButtonTest()
         {
-            //Da vi havde problemer med at IWebElement hideTableButton refererede til en "forældet" instans, gentager vi processen med at sætte referencen 3 gange, for at give den øget chance for at virke.
+            //Da vi havde problemer med at IWebElement hideTableButton refererede til en "forældet" instans,
+            //gentager vi processen med at sætte referencen 3 gange, for at give den øget chance for at virke.
             //for (int i = 0; i < 3; i++)
             //{
             try
@@ -72,14 +82,17 @@ namespace SenseWebdriverTest
             }
             catch (StaleElementReferenceException e)
             {
-                //Hvis metoden efter 3 forsøg, stadig ikke har en gyldig reference til hidetable-knappen, skal den fange en exception og udskrive den til consollen.
+                //Hvis metoden efter 3 forsøg, stadig ikke har en gyldig reference til hidetable-knappen,
+                //skal den fange en exception og udskrive den til consollen.
                 Console.WriteLine(e);
             }
             //}
         }
-
+        
+        /// <summary>
+        /// Test af ShowTableButton, som skal vise indholdet af tabellen på hjemmesiden, hvis det er skjult.
+        /// </summary>
         [TestMethod]
-        //Test af ShowTableButton, som skal vise indholdet af tabellen på hjemmesiden, hvis det er skjult.
         public void ShowButtonTest()
         {
             //Der bruges igen et for-loop for at sikre en gyldig reference til knapperne.
@@ -102,13 +115,16 @@ namespace SenseWebdriverTest
                 }
                 catch (StaleElementReferenceException e)
                 {
-                    //Hvis metoden efter 3 forsøg, stadig ikke har en gyldig reference til hidetable-knappen, skal den fange en exception og udskrive den til consollen.
+                    //Hvis metoden efter 3 forsøg, stadig ikke har en gyldig reference til hidetable-knappen,
+                    //skal den fange en exception og udskrive den til consollen.
                     Console.WriteLine(e);
                 }
 
             }
         }
-
+        /// <summary>
+        /// Test som leder efter et specifikt navn i vores liste af sensors
+        /// </summary>
         [TestMethod]
         public void SensorNameTest()
         {
@@ -118,6 +134,10 @@ namespace SenseWebdriverTest
             Assert.IsTrue(sensorListe.Text.Contains(nameToFind));
         }
 
+        /// <summary>
+        /// Test som tænder og slukker for vores sensors
+        /// vi sætter en thread sleep på for at sikre os at azure kan nå at udføre vores command for den
+        /// </summary>
         [TestMethod]
         public void SensorButtonOnOffTest()
         {
@@ -156,6 +176,9 @@ namespace SenseWebdriverTest
 
         }
 
+        /// <summary>
+        /// Vi tester vores namechange metode til at ændre et navn på vores sensor
+        /// </summary>
         [TestMethod]
         public void NameChangeTest()
         {
@@ -180,6 +203,9 @@ namespace SenseWebdriverTest
 
         }
 
+        /// <summary>
+        /// vi tester vores sorterings metode til at se om et navn bliver sorteret fra nå vi vælger et andet navn
+        /// </summary>
         [TestMethod]
         public void SortMotionsByNameTest()
         {
@@ -193,8 +219,10 @@ namespace SenseWebdriverTest
             Assert.IsFalse(motionListe.Text.Contains(nameToFind));
         }
 
+        /// <summary>
+        /// Afslut driveren.
+        /// </summary>
         [TestCleanup]
-        //Afslut driveren.
         public void EdgeDriverCleanup()
         {
             _driver.Quit();
